@@ -12,7 +12,7 @@ const features = [
 function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   const reduce = useReducedMotion()
   return (
-    <motion.div initial={reduce ? false : { opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }}
+    <motion.div initial={reduce ? false : { y: 28 }} whileInView={{ y: 0 }}
       viewport={{ once: true, margin: '-80px' }} transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}>
       {children}
     </motion.div>
@@ -28,10 +28,6 @@ export default function App() {
   useEffect(() => {
     if (reduce) return
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-      tl.from('.word', { yPercent: 110, opacity: 0, stagger: 0.08, duration: 0.8 })
-        .from('.hero p', { y: 16, opacity: 0, duration: 0.6 }, '-=0.3')
-        .from('.hero .cta', { scale: 0.9, opacity: 0, duration: 0.5 }, '-=0.3')
       gsap.to('.marquee-track', { xPercent: -50, repeat: -1, duration: 22, ease: 'none' })
     }, hero)
     return () => ctx.revert()
@@ -43,7 +39,7 @@ export default function App() {
       <header className="nav"><strong>Orbit</strong><a href="#features">Features</a></header>
       <section className="hero" ref={hero}>
         <motion.div className="blob" style={{ y: blobY }} aria-hidden />
-        <h1>{words.map((w, i) => <span className="mask" key={i}><span className="word">{w}&nbsp;</span></span>)}</h1>
+        <h1>{words.map((w, i) => <span className="mask" key={i}><span className="word" style={{ ['--i' as string]: i }}>{w}&nbsp;</span></span>)}</h1>
         <p>Orbit is a concept travel planner. This page is a front-end demo.</p>
         <a className="cta" href="#features">See how it works</a>
         <div className="marquee" aria-hidden><div className="marquee-track">
